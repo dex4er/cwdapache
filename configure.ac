@@ -6,7 +6,6 @@ AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([
     Makefile
     src/Makefile
-    src/svn/Makefile
 ])
 AC_CONFIG_MACRO_DIR([m4])
 
@@ -28,13 +27,6 @@ AC_SUBST([APACHE_INCLUDE_DIR])
 AC_PATH_PROGS([HTTPD], [httpd apache2], , [/usr/local/apache2/bin:/usr/sbin])
 APACHE_BIN_DIR=`AS_DIRNAME($HTTPD)`
 AC_SUBST([APACHE_BIN_DIR])
-
-AC_CHECK_FILE([/usr/local/include/subversion-1/svn_client.h], [SVN_DIR="/usr/local"], [
-    AC_CHECK_FILE([/usr/include/subversion-1/svn_client.h], [SVN_DIR="/usr"], [
-        AC_MSG_ERROR([Could not locate Subversion directory])
-    ])
-])
-AC_SUBST([SVN_DIR])
 
 AC_CHECK_FILE([/usr/libexec/apache2/mod_dav.so], [APACHE_MODULES_DIR="/usr/libexec/apache2"], [
     AC_CHECK_FILE([/usr/lib64/httpd/modules/mod_dav.so], [APACHE_MODULES_DIR="/usr/lib64/httpd/modules"], [
