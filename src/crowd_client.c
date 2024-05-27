@@ -352,8 +352,10 @@ static size_t write_crowd_response_header(void *ptr, size_t size, size_t nmemb, 
             return -1;
         }
         if (sscanf(status_line, "HTTP/%*u.%*u %u ", &(write_data->status_code)) != 1) {
-            ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, write_data->r, "Failed to parse status line: '%s'", status_line);
-            return -1;
+            if (sscanf(status_line, "HTTP/%*u %u ", &(write_data->status_code)) != 1) {
+                ap_log_rerror(APLOG_MARK, APLOG_ERR, 0, write_data->r, "Failed to parse status line: '%s'", status_line);
+                return -1;
+            }
         }
     } else if (size * nmemb == 2 && memcmp("\r\n", ptr, 2) == 0) {
         /* End of headers for this request */
